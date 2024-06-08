@@ -18,7 +18,9 @@ export function addAudio(newAudio: IUploadAudio) {
 export function deleteAudio(id: number) {
   return hyRequest.post({
     url: '/audio/delete',
-    data: id
+    data: {
+      id
+    }
   })
 }
 

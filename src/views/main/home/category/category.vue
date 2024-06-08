@@ -48,7 +48,7 @@
 import useCategoryStore from '@/store/main/home/category'
 import { storeToRefs } from 'pinia'
 
-import search from './search.vue'
+import search from './cpns/search.vue'
 import content from './cpns/content.vue'
 
 const categoryStore = useCategoryStore()

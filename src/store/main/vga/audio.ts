@@ -12,26 +12,27 @@ const useAudioStore = defineStore('audioStore', {
   }),
   actions: {
     async fetchAllAudioAction(audioList: IAudio) {
+      console.log('请求', audioList)
+
       const response = await getAudioList(audioList)
       this.audioList = response.data
     },
     async addAudioAction(newAudio: IUploadAudio) {
       const response = await addAudio(newAudio)
-      if (response.code === 200) {
-        this.fetchAllAudioAction(newAudio)
-      }
+      console.log(response)
+      this.fetchAllAudioAction({})
     },
     async updateAudioAction(modifiedAudio: IModifiedAudio) {
       const response = await updateAudio(modifiedAudio)
-      if (response.code === 200) {
-        this.fetchAllAudioAction(modifiedAudio)
-      }
+      console.log(response)
+
+      this.fetchAllAudioAction({})
     },
     async deleteAudioAction(id: number) {
       const response = await deleteAudio(id)
-      if (response.code === 200) {
-        this.fetchAllAudioAction(response.data)
-      }
+      console.log(response)
+
+      this.fetchAllAudioAction({})
     }
   }
 })
