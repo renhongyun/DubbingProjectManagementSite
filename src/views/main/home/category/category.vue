@@ -1,6 +1,6 @@
 <template>
   <div class="category">
-    <search></search>
+    <!-- <search></search> -->
     <div class="content1">
       <template v-for="item in categoryList" :key="item.id">
         <div class="content">

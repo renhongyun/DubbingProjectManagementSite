@@ -2,16 +2,20 @@
   <div class="modal">
     <el-dialog
       v-model="centerDialogVisible"
-      :title="isNewRef ? '添加配音老师' : '修改配音老师'"
+      :title="isNewRef ? '添加标签' : '修改标签'"
       width="500"
       center
     >
       <div class="form">
         <el-form :model="formData" label-width="80px" ref="formRef">
-          <el-form-item label="性别" prop="sex">
-            <el-select placeholder="请选择性别" v-model="formData.sex">
-              <el-option label="男" value="男"></el-option>
-              <el-option label="女" value="女"></el-option>
+          <el-form-item v-if="!isNewRef" label="排名" prop="ranking">
+            <el-input placeholder="请输入排名" v-model="formData.ranking"></el-input>
+          </el-form-item>
+          <el-form-item v-else label="类别" prop="type">
+            <el-select placeholder="请选择类别" v-model="formData.type">
+              <el-option label="情绪标签" value="0"></el-option>
+              <el-option label="类型标签" value="1"></el-option>
+              <el-option label="语言标签" value="2"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="名字" prop="name">
@@ -35,31 +39,31 @@ import { ref, reactive, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ElForm } from 'element-plus'
 
-import useAuthorStore from '@/store/author/author'
-const authorStore = useAuthorStore()
+import useTagsStore from '@/store/tag/tag'
+const tagStore = useTagsStore()
 
 const centerDialogVisible = ref(false)
 const formData: any = reactive({
   name: '',
-  sex: '',
-  id: ''
+  type: '',
+  id: '',
+  ranking: ''
 })
 const isNewRef = ref(true)
 const formRef = ref<InstanceType<typeof ElForm>>()
 
 const emit = defineEmits(['addClick', 'editClick'])
 
-const setModalVisible = (isNew, itemData) => {
+const setModalVisible = (isNew: boolean, itemData: any) => {
   isNewRef.value = isNew
   centerDialogVisible.value = true
-
   if (!isNew && itemData) {
     for (const key in formData) {
-      if (key === 'sex') {
-        formData[key] = itemData[key] === 0 ? '女' : '男'
-      } else {
-        formData[key] = itemData[key]
-      }
+      // if (key === 'sex') {
+      //   formData[key] = itemData[key]
+      // } else {
+      formData[key] = itemData[key]
+      // }
     }
   } else {
     for (const key in formData) {
@@ -75,9 +79,14 @@ const cancelClick = () => {
 const confirmClick = () => {
   centerDialogVisible.value = false
   if (isNewRef.value) {
-    authorStore.addAuthorAction(formData)
+    formData.type = Number(formData.type)
+    delete formData.id
+    delete formData.ranking
+    tagStore.addTagsAction(formData)
   } else {
-    authorStore.updateAuthorAction(formData)
+    delete formData.type
+    formData.ranking = Number(formData.ranking)
+    tagStore.updateTagsAction(formData)
   }
 
   formRef.value?.resetFields()

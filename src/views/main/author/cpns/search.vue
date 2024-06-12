@@ -2,7 +2,7 @@
   <div class="search">
     <el-form label-width="50px" :model="searchForm" ref="formRef">
       <el-row :gutter="10" class="flex">
-        <el-col :span="9">
+        <el-col :span="6">
           <el-form-item label="配音老师id" prop="id" label-width="100">
             <el-input v-model="searchForm.id"></el-input>
           </el-form-item>

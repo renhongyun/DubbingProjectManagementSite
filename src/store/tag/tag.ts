@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getAllTags, addTags, deleteTags, newTags } from '@/service/main/tag/tag'
+import { getAllTags, addTags, deleteTags, updateTags } from '@/service/main/tag/tag'
 import type { IAddTag, IModifiedTag, IresTags } from '@/types'
 interface ITagsState {
   tagsByType: { [key: number]: IresTags[] }
@@ -27,13 +27,20 @@ const useTagsStore = defineStore('tagsStore', {
 
     async fetchTagsAction(type: number) {
       const response = await getAllTags(type)
-      // 动态设置类型属性以保持响应数据
       this.tagsByType[type] = response.data
     },
     async addTagsAction(newTag: IAddTag) {
       await addTags(newTag)
       // 添加之后更新
       this.fetchTagsAction(newTag.type)
+    },
+    async updateTagsAction(modifiedTag: IModifiedTag) {
+      await updateTags(modifiedTag)
+      this.fetchAllTagsAction()
+    },
+    async deleteTagsAction(id: number) {
+      await deleteTags(id)
+      this.fetchAllTagsAction()
     }
   }
 })

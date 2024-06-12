@@ -10,7 +10,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from 'vue'
-import search from './cpns/search.vue'
+
 import tableContent from './cpns/tableContent.vue'
 import modal from './cpns/modal.vue'
 const contentRef = ref<InstanceType<typeof tableContent>>()

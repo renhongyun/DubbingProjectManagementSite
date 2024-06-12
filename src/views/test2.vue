@@ -53,7 +53,7 @@ export default {
 /* 你的样式内容 */
 </style> -->
 
-<template>
+<!-- <template>
   <div>
     <el-form :model="formData" label-width="80px" @submit.native.prevent="handleSubmit">
       <el-form-item label="名字" prop="name">
@@ -97,4 +97,69 @@ const handleSubmit = async () => {
 
 <style scoped>
 /* 添加一些简单的样式 */
+</style> -->
+
+<template>
+  <div>
+    <h1>添加标签</h1>
+    <input type="text" v-model="name" placeholder="标签名" />
+    <select v-model="type">
+      <option value="0">情绪标签</option>
+      <option value="1">类型标签</option>
+      <option value="2">语言标签</option>
+    </select>
+    <button @click="submit">提交</button>
+    <div>{{ message }}</div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: '',
+      type: '',
+      message: ''
+    }
+  },
+  methods: {
+    async submit() {
+      try {
+        const response = await fetch('http://demo.kbws.xyz/api/tags/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: this.name,
+            type: Number(this.type)
+          })
+        })
+        const data = await response.json()
+        this.message = '标签添加成功: ' + JSON.stringify(data)
+      } catch (error) {
+        this.message = '标签添加失败: ' + error.message
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+input,
+select,
+button {
+  padding: 10px;
+  font-size: 16px;
+  margin-top: 10px;
+  display: block;
+  width: 300px;
+}
+div {
+  margin-top: 20px;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ddd;
+  width: 300px;
+}
 </style>

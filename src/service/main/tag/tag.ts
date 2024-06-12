@@ -17,13 +17,13 @@ export function addTags(newTags: IAddTag) {
 export function deleteTags(id: number) {
   return hyRequest.post({
     url: '/tags/delete',
-    data: id
+    data: { id }
   })
 }
 
-export function newTags(modifiedTag: IModifiedTag) {
+export function updateTags(modifiedTag: IModifiedTag) {
   return hyRequest.post({
-    url: '/tags/add',
+    url: '/tags/update',
     data: modifiedTag
   })
 }

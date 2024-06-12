@@ -9,7 +9,11 @@
         <el-table :data="authorList" border stripe>
           <el-table-column prop="id" label="ID" width="80" />
           <el-table-column prop="name" label="姓名" />
-          <el-table-column prop="ranking" label="排名" width="200"> </el-table-column>
+          <el-table-column prop="sex" label="性别" width="200">
+            <template #default="scope">
+              {{ scope.row.sex === 0 ? '女' : '男' }}
+            </template>
+          </el-table-column>
 
           <el-table-column align="center" label="操作" width="280">
             <template #default="scope">
@@ -99,6 +103,6 @@ defineExpose({
   width: 100%;
   margin-bottom: 20px;
   padding: 20px;
-  // box-sizing: border-box;
+  box-sizing: border-box;
 }
 </style>
