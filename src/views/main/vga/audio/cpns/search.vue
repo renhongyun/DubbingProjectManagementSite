@@ -27,19 +27,21 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="情绪标签id" prop="emotionTagId" label-width="90px">
-            <el-input
-              placeholder="请输入情绪标签id"
-              v-model.number="searchForm.emotionTagId"
-            ></el-input>
+          <el-form-item label="情绪标签" prop="emotionTagId" label-width="80px">
+            <el-select placeholder="请选择作品情绪标签" v-model="searchForm.emotionTagId">
+              <template v-for="item in tagsByType[0]" :key="item.id">
+                <el-option :value="item.id" :label="item.name" />
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
-          <el-form-item label="分类标签id" prop="categoryTagId">
-            <el-input
-              placeholder="请输入分类标签id"
-              v-model.number="searchForm.categoryTagId"
-            ></el-input>
+          <el-form-item label="分类标签" prop="categoryTagId" label-width="80px">
+            <el-select placeholder="请选择作品类型标签" v-model="searchForm.categoryTagId">
+              <template v-for="item in tagsByType[1]" :key="item.id">
+                <el-option :value="item.id" :label="item.name" />
+              </template>
+            </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -56,6 +58,9 @@
 import { reactive, ref } from 'vue'
 import type { ElForm } from 'element-plus'
 import { IAudio } from '@/types/audio'
+import useTagStore from '@/store/tag/tag'
+import { storeToRefs } from 'pinia'
+
 const searchForm: IAudio = reactive({})
 const formRef = ref<InstanceType<typeof ElForm>>()
 
@@ -71,6 +76,9 @@ function handleResetClick() {
 const handleQueryClick = () => {
   emit('queryClick', searchForm)
 }
+
+const tagStore = useTagStore()
+const { tagsByType } = storeToRefs(tagStore)
 </script>
 <style lang="less" scoped>
 .search {

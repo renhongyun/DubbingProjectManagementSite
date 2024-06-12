@@ -23,8 +23,21 @@
           <template #default="scope"> {{ scope.row.isRecommend ? '是 ' : '否' }} </template>
         </el-table-column>
         <el-table-column prop="dubbingActorId" label="配音老师" />
-        <el-table-column prop="emotionTagId" label="情绪标签" />
-        <el-table-column prop="categoryTagId" label="类型标签" />
+        <el-table-column prop="emotionTagId" label="情绪标签">
+          <template #default="scope">
+            {{ getTagName(scope.row.emotionTagId, tagsByType[0]) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="languageTagId" label="语言标签">
+          <template #default="scope">
+            {{ getTagName(scope.row.languageTagId, tagsByType[2]) }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="categoryTagId" label="类型标签">
+          <template #default="scope">
+            {{ getTagName(scope.row.categoryTagId, tagsByType[1]) }}
+          </template>
+        </el-table-column>
         <el-table-column prop="categoryId" label="一级分类">
           <template #default="scope">
             {{
@@ -36,7 +49,7 @@
             }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="操作">
+        <el-table-column align="center" label="操作" width="180">
           <template #default="scope">
             <el-button
               size="small"
@@ -67,34 +80,48 @@ import useAudioStore from '@/store/main/vga/audio'
 import { storeToRefs } from 'pinia'
 import { reactive, ref } from 'vue'
 import IUploadAudio from '@/types/audio.ts'
+import useTagStore from '@/store/tag/tag'
 
-const emit = defineEmits(['newClick'])
+const emit = defineEmits(['newClick', 'editClick'])
 
 const audioStore = useAudioStore()
 const { audioList } = storeToRefs(audioStore)
-console.log('xx', audioList)
 
 const fetchListData = (formData: any = {}) => {
-  console.log(formData)
   audioStore.fetchAllAudioAction(formData)
-  console.log('更新之后的', audioList)
 }
 fetchListData()
-// 删除操作
+
+// 删除
 const handleDeleteBtnClick = (id: number) => {
   audioStore.deleteAudioAction(id)
 }
+
 //新建
 const handleNewClick = () => {
   console.log('新建')
   emit('newClick')
 }
+
+//修改
+const handleEditBtnClick = (itemData: any) => {
+  emit('editClick', itemData)
+}
+
 //添加数据
 const newData = (formData: IUploadAudio) => {
-  console.log('新数据', formData)
   audioStore.addAudioAction(formData)
-  console.log('更新之后的', audioList)
 }
+
+//捆绑id和内容
+const tagStore = useTagStore()
+const { tagsByType } = storeToRefs(tagStore)
+
+const getTagName = (id, tags) => {
+  const tag = tags.find((tag) => tag.id === id)
+  return tag ? tag.name : '未知'
+}
+
 defineExpose({
   fetchListData,
   newData

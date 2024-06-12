@@ -16,6 +16,7 @@ const useAudioStore = defineStore('audioStore', {
 
       const response = await getAudioList(audioList)
       this.audioList = response.data
+      console.log('qingiqudaode ', this.audioList)
     },
     async addAudioAction(newAudio: IUploadAudio) {
       const response = await addAudio(newAudio)

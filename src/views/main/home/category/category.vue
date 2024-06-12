@@ -16,26 +16,26 @@
               <el-table-column prop="updateTime" label="更新时间" />
               <el-table-column prop="ranking" label="顺序" />
               <el-table-column align="center" v-bind="item" label="操作">
-                <!-- <template #default="scope"> -->
-                <el-button
-                  size="small"
-                  icon="Edit"
-                  type="primary"
-                  text
-                  @click="handleEditBtnClick(scope.row)"
-                >
-                  编辑
-                </el-button>
-                <el-button
-                  size="small"
-                  icon="Delete"
-                  type="danger"
-                  text
-                  @click="handleDeleteBtnClick(scope.row.id)"
-                >
-                  删除
-                </el-button>
-                <!-- </template> -->
+                <template #default="scope">
+                  <el-button
+                    size="small"
+                    icon="Edit"
+                    type="primary"
+                    text
+                    @click="handleEditBtnClick(scope.row)"
+                  >
+                    编辑
+                  </el-button>
+                  <el-button
+                    size="small"
+                    icon="Delete"
+                    type="danger"
+                    text
+                    @click="handleDeleteBtnClick(scope.row.id)"
+                  >
+                    删除
+                  </el-button>
+                </template>
               </el-table-column>
             </el-table>
           </div>

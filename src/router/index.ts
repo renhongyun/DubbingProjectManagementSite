@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import('@/views/test.vue')
     },
     {
+      path: '/test2',
+      name: 'test2',
+      component: () => import('@/views/test2.vue')
+    },
+    {
       path: '/audio',
       name: 'audio',
       component: () => import('@/views/audio.vue')

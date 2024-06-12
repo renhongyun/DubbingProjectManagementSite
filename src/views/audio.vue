@@ -116,6 +116,8 @@ import { ref } from 'vue'
 
 export default {
   setup() {
+    
+
     const file = ref<File | null>(null)
     const carouselName = ref<string>('')
 
