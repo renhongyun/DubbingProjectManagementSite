@@ -44,10 +44,10 @@ const tagStore = useTagsStore()
 
 const centerDialogVisible = ref(false)
 const formData: any = reactive({
+  ranking: '',
   name: '',
   type: '',
-  id: '',
-  ranking: ''
+  id: ''
 })
 const isNewRef = ref(true)
 const formRef = ref<InstanceType<typeof ElForm>>()
@@ -103,3 +103,4 @@ defineExpose({
   padding-right: 60px;
 }
 </style>
+@/store/main/tag/tag

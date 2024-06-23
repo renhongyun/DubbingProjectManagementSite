@@ -29,7 +29,6 @@ const handleNewClick = () => {
 }
 
 const handleEditClick = (itemData: any) => {
-  console.log('数据', itemData)
   modalRef.value?.setModalVisible(false, itemData)
 }
 </script>

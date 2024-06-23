@@ -8,7 +8,7 @@ const LOGIN_TOKEN = 'login/token'
 const useLoginStore = defineStore('login', {
   state: () => ({
     id: '',
-    token: localCache.getCache(LOGIN_TOKEN) ?? '',
+    // token: localCache.getCache(LOGIN_TOKEN) ?? '',
     name: '',
     message: ''
   }),

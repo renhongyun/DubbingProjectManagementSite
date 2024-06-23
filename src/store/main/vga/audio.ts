@@ -12,11 +12,9 @@ const useAudioStore = defineStore('audioStore', {
   }),
   actions: {
     async fetchAllAudioAction(audioList: IAudio) {
-      console.log('请求', audioList)
-
       const response = await getAudioList(audioList)
       this.audioList = response.data
-      console.log('qingiqudaode ', this.audioList)
+      console.log('音频列表', this.audioList)
     },
     async addAudioAction(newAudio: IUploadAudio) {
       const response = await addAudio(newAudio)

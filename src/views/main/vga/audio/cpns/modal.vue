@@ -46,6 +46,13 @@
               </template>
             </el-select>
           </el-form-item>
+          <el-form-item label="配音老师" prop="dubbingActorId">
+            <el-select placeholder="请选择配音老师" v-model="formData.dubbingActorId">
+              <template v-for="item in authorList" :key="item.id">
+                <el-option :value="item.id" :label="item.name" />
+              </template>
+            </el-select>
+          </el-form-item>
           <el-form-item label="语言标签" prop="languageTagId">
             <el-select
               placeholder="请选择作品语言标签"
@@ -81,6 +88,12 @@ import useAudioStore from '@/store/main/vga/audio'
 const audioStore = useAudioStore()
 // const { audioList } = storeToRefs(audioStore)
 
+import useAuthorStore from '@/store/author/author'
+
+const authorStore = useAuthorStore()
+const { authorList } = storeToRefs(authorStore)
+authorStore.fetchAllAuthorAction()
+
 const centerDialogVisible = ref(false)
 const formData: IUploadAudio = reactive({
   categoryId: '',
@@ -92,7 +105,8 @@ const formData: IUploadAudio = reactive({
   isRecommend: '',
   languageTagId: '',
   sex: '',
-  url: ''
+  url: '',
+  ranking: ''
 })
 const isNewRef = ref(true)
 const formRef = ref<InstanceType<typeof ElForm>>()
@@ -145,10 +159,12 @@ const confirmClick = () => {
     formData.sex = Number(formData.sex)
     formData.isRecommend = Number(formData.isRecommend)
 
+    formData.dubbingActorId = Number(formData.dubbingActorId)
+    // dubbingActorId dubbingActorId
     delete formData.name
     delete formData.url
 
-    console.log(formData)
+    console.log('111', formData)
     emit('addClick', formData)
     // audioStore.addAudioAction(formData)
   } else {

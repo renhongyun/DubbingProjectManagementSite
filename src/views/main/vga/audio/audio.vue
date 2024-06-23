@@ -5,8 +5,10 @@
       ref="contentRef"
       @new-click="handleNewClick"
       @edit-click="handleEditClick"
+      @more-click="handleMoreClick"
     ></table-content>
     <modal ref="modalRef" @add-click="handleAddClick"></modal>
+    <more-modal ref="moreModalRef"></more-modal>
   </div>
 </template>
 <script setup lang="ts">
@@ -17,7 +19,10 @@ import tableContent from './cpns/tableContent.vue'
 import modal from './cpns/modal.vue'
 import IUploadAudio from '@/types/audio.ts'
 import useTagsStore from '@/store/tag/tag'
+import moreModal from './cpns/moreModal.vue'
+
 const contentRef = ref<InstanceType<typeof tableContent>>()
+const moreModalRef = ref<InstanceType<typeof moreModal>>()
 
 const handleQueryClick = (formData: any) => {
   contentRef.value?.fetchListData(formData)
@@ -34,11 +39,14 @@ const handleNewClick = () => {
 
 //添加数据
 const handleAddClick = (formData: IUploadAudio) => {
-  console.log('父组件拿到的新数据', formData)
   contentRef.value?.newData(formData)
 }
 const handleEditClick = (itemData: any) => {
   modalRef.value?.setModalVisible(false, itemData)
+}
+
+const handleMoreClick = () => {
+  moreModalRef.value?.setModalVisible(true)
 }
 
 //加载全部标签
@@ -53,3 +61,4 @@ onMounted(async () => {
   overflow: hidden;
 }
 </style>
+@/store/main/tag/tag

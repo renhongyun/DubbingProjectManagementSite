@@ -1,0 +1,33 @@
+body,
+h1,
+h2,
+h3,
+h4,
+ul,
+li {
+  padding: 0;
+  margin: 0;
+}
+ul,
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+  color: #333;
+}
+img {
+  vertical-align: top;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+}
+/* 隐藏垂直滚动条 */
+::-webkit-scrollbar {
+  display: none;
+  /* 适用于Chrome, Safari, Opera */
+}

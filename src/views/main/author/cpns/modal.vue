@@ -94,3 +94,4 @@ defineExpose({
   padding-right: 60px;
 }
 </style>
+@/store/main/author/author

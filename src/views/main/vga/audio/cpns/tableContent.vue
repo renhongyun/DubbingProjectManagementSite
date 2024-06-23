@@ -2,7 +2,8 @@
   <div class="content">
     <div class="header">
       <h2 class="title">音频列表</h2>
-      <el-button type="primary" @click="handleNewClick">添加音频</el-button>
+      <el-button type="primary" @click="handleMoreClick">批量添加</el-button>
+      <el-button type="primary" @click="handleNewClick" class="newBtn">添加音频</el-button>
     </div>
     <div class="table">
       <el-table :data="audioList" border stripe>
@@ -18,11 +19,19 @@
           <template #default="scope"> {{ scope.row.sex ? '男' : '女' }} </template>
         </el-table-column>
 
-        <el-table-column prop="url" label="地址" />
+        <el-table-column prop="url" label="地址">
+          <template #default="scope">
+            <a :href="scope.row.url" target="_blank" class="url">{{ scope.row.url }}</a>
+          </template>
+        </el-table-column>
         <el-table-column prop="isRecommend" label="是否推荐">
           <template #default="scope"> {{ scope.row.isRecommend ? '是 ' : '否' }} </template>
         </el-table-column>
-        <el-table-column prop="dubbingActorId" label="配音老师" />
+        <el-table-column prop="dubbingActorId" label="配音老师">
+          <template #default="scope">
+            <span>{{ getAuthorName(scope.row.dubbingActorId) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="emotionTagId" label="情绪标签">
           <template #default="scope">
             {{ getTagName(scope.row.emotionTagId, tagsByType[0]) }}
@@ -82,7 +91,9 @@ import { reactive, ref } from 'vue'
 import IUploadAudio from '@/types/audio.ts'
 import useTagStore from '@/store/tag/tag'
 
-const emit = defineEmits(['newClick', 'editClick'])
+import useAuthorStore from '@/store/author/author'
+
+const emit = defineEmits(['newClick', 'editClick', 'moreClick'])
 
 const audioStore = useAudioStore()
 const { audioList } = storeToRefs(audioStore)
@@ -102,7 +113,11 @@ const handleNewClick = () => {
   console.log('新建')
   emit('newClick')
 }
-
+//新建
+const handleMoreClick = () => {
+  console.log('新建')
+  emit('moreClick')
+}
 //修改
 const handleEditBtnClick = (itemData: any) => {
   emit('editClick', itemData)
@@ -113,15 +128,23 @@ const newData = (formData: IUploadAudio) => {
   audioStore.addAudioAction(formData)
 }
 
-//捆绑id和内容
+//捆绑tagid和内容
 const tagStore = useTagStore()
 const { tagsByType } = storeToRefs(tagStore)
 
-const getTagName = (id, tags) => {
+const getTagName = (id: number, tags) => {
   const tag = tags.find((tag) => tag.id === id)
   return tag ? tag.name : '未知'
 }
 
+//捆绑authorid和内容
+const authorStore = useAuthorStore()
+const { authorList } = storeToRefs(authorStore)
+authorStore.fetchAllAuthorAction()
+const getAuthorName = (id: number) => {
+  const author = authorList.value.find((author) => author.id === id)
+  return author ? author.name : ''
+}
 defineExpose({
   fetchListData,
   newData
@@ -140,4 +163,8 @@ defineExpose({
   align-items: flex-end;
   margin-bottom: 20px;
 }
+.url {
+  color: #409eff;
+}
 </style>
+@/store/main/author/author@/store/main/tag/tag

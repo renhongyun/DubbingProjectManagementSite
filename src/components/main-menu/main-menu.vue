@@ -13,6 +13,7 @@
         active-text-color="#fff"
         background-color="#001529"
         router
+        :default-active="defaultActive"
       >
         <el-sub-menu index="1">
           <template #title>
@@ -31,14 +32,14 @@
           <el-menu-item index="/main/vga/video">视频管理</el-menu-item>
         </el-sub-menu>
         <el-menu-item index="/main/tag">
+          <el-icon><PriceTag /></el-icon>
           <template #title>
-            <el-icon><PriceTag /></el-icon>
             <span>标签管理</span>
           </template>
         </el-menu-item>
         <el-menu-item index="/main/author">
+          <el-icon><UserFilled /></el-icon>
           <template #title>
-            <el-icon><UserFilled /></el-icon>
             <span>配音老师管理</span>
           </template>
         </el-menu-item>
@@ -47,15 +48,18 @@
   </div>
 </template>
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+
 defineProps({
   isFold: {
     type: Boolean,
     default: false
   }
 })
-import { ref } from 'vue'
 
-// const defaultActive = ref('/main/home/carousel')
+const route = useRoute()
+const defaultActive = computed(() => route.path)
 </script>
 <style lang="less" scoped>
 .main-menu {

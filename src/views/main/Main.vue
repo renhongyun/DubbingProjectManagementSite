@@ -8,7 +8,7 @@
         <el-header height="50px">
           <main-header @fold-change="handleFoldChange" />
         </el-header>
-        <el-main class="abcd">
+        <el-main >
           <router-view />
         </el-main>
       </el-container>

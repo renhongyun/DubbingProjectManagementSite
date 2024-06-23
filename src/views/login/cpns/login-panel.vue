@@ -46,12 +46,12 @@ const loginInfo = reactive({
 
 const loginRules: FormRules = {
   name: [
-    { required: true, message: '请输入帐号信息', trigger: 'blur' },
-    {
-      pattern: /^[a-z0-9]{6,20}$/,
-      message: '必须是6~20数字或字母组成~',
-      trigger: 'change'
-    }
+    { required: true, message: '请输入帐号信息', trigger: 'blur' }
+    // {
+    //   pattern: /^[a-z0-9]{6,20}$/,
+    //   message: '必须是6~20数字或字母组成~',
+    //   trigger: 'change'
+    // }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },

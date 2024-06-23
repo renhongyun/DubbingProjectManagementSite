@@ -99,3 +99,4 @@ const { tagsByType } = storeToRefs(tagStore)
   }
 }
 </style>
+@/store/main/tag/tag

@@ -1,6 +1,8 @@
 <template>
   <div class="content">
     <el-button type="primary" @click="handleNewClick" class="newBtn">添加标签</el-button>
+    <el-button type="primary" @click="handleNewClick" class="newBtn">批量添签</el-button>
+
     <template v-for="(item, index) in tagsByType">
       <div class="item">
         <div class="header">
@@ -14,9 +16,7 @@
             <el-table-column prop="name" label="名称" />
             <el-table-column prop="createTime" label="创建时间" />
             <el-table-column prop="updateTime" label="修改时间" />
-
             <el-table-column prop="ranking" label="排名" width="200"> </el-table-column>
-
             <el-table-column align="center" label="操作" width="280">
               <template #default="scope">
                 <el-button
@@ -112,3 +112,4 @@ const handleEditBtnClick = (itemData: any) => {
   box-sizing: border-box;
 }
 </style>
+@/store/main/tag/tag

@@ -32,7 +32,7 @@ const useTagsStore = defineStore('tagsStore', {
     async addTagsAction(newTag: IAddTag) {
       await addTags(newTag)
       // 添加之后更新
-      this.fetchTagsAction(newTag.type)
+      this.fetchAllTagsAction()
     },
     async updateTagsAction(modifiedTag: IModifiedTag) {
       await updateTags(modifiedTag)
