@@ -1,5 +1,4 @@
 export const BASE_URL = 'http://demo.kbws.xyz/api'
-// export const BASE_URL = 'http://codercba.com:5000'
 
 export const TIME_OUT = 10000
 // console.log(import.meta.env.MODE) //develop,production

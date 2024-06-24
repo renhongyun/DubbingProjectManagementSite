@@ -1,7 +1,5 @@
-import { getAllCategory } from '@/service/main/home/category'
+import { getCategories, updateImg } from '@/service/main/home/category'
 import { defineStore } from 'pinia'
-// import useMainStore from '../main'
-// import type { ISystemState } from './type'
 
 interface ICategoryState {
   categoryList: any[]
@@ -12,10 +10,14 @@ const useCategoryStore = defineStore('categoryStore', {
     categoryList: []
   }),
   actions: {
-    fetchAllCategoryAction() {
-      getAllCategory().then((res) => {
-        this.categoryList = res.data
-      })
+    async fetchAllCategoryAction() {
+      const res = await getCategories()
+      this.categoryList = res.data
+    },
+    async updateCategoryImgAction(id: number, img: string) {
+      const res = await updateImg(id, img)
+      console.log(res)
+      this.fetchAllCategoryAction()
     }
   }
 })

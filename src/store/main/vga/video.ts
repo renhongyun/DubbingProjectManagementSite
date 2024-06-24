@@ -22,6 +22,7 @@ const useVideoStore = defineStore('videoStore', {
       this.fetchVideoListAction()
     },
     async updateVideoAction(modifiedVideo: IModifiedVideo) {
+      console.log('参数', modifiedVideo)
       const response = await updateVideo(modifiedVideo)
       console.log(response)
 

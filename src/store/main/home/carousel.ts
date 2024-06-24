@@ -6,18 +6,19 @@ import {
 import { defineStore } from 'pinia'
 import type { INewCarouselImage } from '@/types'
 
-interface IAudioState {
+interface IImageState {
   imageList: any[]
 }
 
 const useCarouselStore = defineStore('carouselStore', {
-  state: (): IAudioState => ({
+  state: (): IImageState => ({
     imageList: []
   }),
   actions: {
     async fetchCarouselImageListAction() {
       const response = await getCarouselImageList()
-      this.imageList = response.data
+      this.imageList = response
+      console.log('打印轮播图', this.imageList)
     },
     async addCarouselImageAction(newImage: INewCarouselImage) {
       const response = await addCarouselImage(newImage)

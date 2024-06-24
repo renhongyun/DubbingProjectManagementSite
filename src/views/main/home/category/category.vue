@@ -1,79 +1,126 @@
 <template>
   <div class="category">
-    <!-- <search></search> -->
-    <div class="content1">
-      <template v-for="item in categoryList" :key="item.id">
-        <div class="content">
-          <div class="header">
-            <h2 class="title">{{ item.name }}</h2>
-            <el-button type="primary">添加标签</el-button>
-          </div>
-          <div class="table">
-            <el-table :data="item.tags" border stripe>
-              <el-table-column prop="id" label="ID" width="80" />
-              <el-table-column prop="name" label="标签" />
-              <el-table-column prop="createTime" label="创建时间" />
-              <el-table-column prop="updateTime" label="更新时间" />
-              <el-table-column prop="ranking" label="顺序" />
-              <el-table-column align="center" v-bind="item" label="操作">
-                <template #default="scope">
-                  <el-button
-                    size="small"
-                    icon="Edit"
-                    type="primary"
-                    text
-                    @click="handleEditBtnClick(scope.row)"
-                  >
-                    编辑
-                  </el-button>
-                  <el-button
-                    size="small"
-                    icon="Delete"
-                    type="danger"
-                    text
-                    @click="handleDeleteBtnClick(scope.row.id)"
-                  >
-                    删除
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-          </div>
-        </div>
-      </template>
-    </div>
+    <h2>分类列表</h2>
+    <el-table :data="categoryList" border stripe>
+      <el-table-column prop="id" label="ID" width="80" />
+      <el-table-column prop="name" label="名称" width="120" />
+      <el-table-column prop="img" label="封面" width="120">
+        <template #default="scope">
+          <img :src="scope.row.img" alt="category image" class="category-image" />
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="180">
+        <template #default="scope">
+          <el-button size="small" type="primary" @click="handleEditClick(scope.row)"
+            >修改封面</el-button
+          >
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-dialog v-model="editDialogVisible" title="修改封面" width="400px" center>
+      <div class="upload-container">
+        <el-upload
+          class="upload-demo"
+          drag
+          :http-request="customUploadRequest"
+          :on-success="handleUploadSuccess"
+          :file-list="fileList"
+          :limit="1"
+          action=""
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div class="el-upload__tip" slot="tip">仅支持图片文件</div>
+        </el-upload>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancelClick">取消</el-button>
+        <el-button type="primary" @click="confirmEdit">确认</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
-<script setup lang="ts">
-import useCategoryStore from '@/store/main/home/category'
-import { storeToRefs } from 'pinia'
 
-import search from './cpns/search.vue'
-import content from './cpns/content.vue'
+<script setup lang="ts">
+import { ref, reactive, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import useCategoryStore from '@/store/main/home/category'
+import useFileUploadStore from '@/store/file/file'
 
 const categoryStore = useCategoryStore()
-categoryStore.fetchAllCategoryAction({})
-
 const { categoryList } = storeToRefs(categoryStore)
-console.log(categoryList)
+
+const fileUploadStore = useFileUploadStore()
+const { uploadStatus, uploadedFileUrl } = storeToRefs(fileUploadStore)
+
+const editDialogVisible = ref(false)
+const fileList = ref([])
+const selectedCategory = reactive({
+  id: null,
+  name: '',
+  img: ''
+})
+
+const fetchCategories = async () => {
+  await categoryStore.fetchAllCategoryAction()
+}
+
+const handleEditClick = (category) => {
+  selectedCategory.id = category.id
+  selectedCategory.name = category.name
+  selectedCategory.img = category.img
+  editDialogVisible.value = true
+}
+
+const customUploadRequest = async ({ file }) => {
+  await fileUploadStore.uploadFileAction(file, 'video')
+}
+
+const handleUploadSuccess = () => {
+  selectedCategory.img = uploadedFileUrl.value
+}
+
+const confirmEdit = async () => {
+  if (selectedCategory.id && selectedCategory.img) {
+    await categoryStore.updateCategoryImgAction(selectedCategory.id, selectedCategory.img)
+    editDialogVisible.value = false
+    fileList.value = []
+  }
+}
+const cancelClick = async () => {
+  editDialogVisible.value = false
+  fileList.value = []
+}
+onMounted(fetchCategories)
 </script>
+
 <style lang="less" scoped>
 .category {
-  border-radius: 8px;
-  overflow: hidden;
-}
-.content {
   background-color: #fff;
   padding: 20px;
-  margin-top: 10px;
+  margin-top: 20px;
 }
-.header {
-  display: flex;
-  justify-content: space-between;
-  // font-size: 22px;
-  align-items: flex-end;
+.category-image {
+  width: 100px;
+  height: auto;
 }
-.table {
-  margin-top: 15px;
+.upload-container {
+  text-align: center;
+  margin-bottom: 20px;
 }
+.upload-demo {
+  border: 2px dashed #409eff;
+  background-color: #f9f9f9;
+  padding: 40px 20px;
+}
+.dialog-footer {
+  width: 100%;
+  text-align: right;
+}
+
+// :deep(.el-dialog) {
+//   --el-dialog-width: 70vw !important;
+//   --el-dialog-height: 100vh !important;
+// }
 </style>

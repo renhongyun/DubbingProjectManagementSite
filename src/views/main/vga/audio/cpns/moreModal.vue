@@ -162,7 +162,7 @@ const cancelClick = () => {
 
 const confirmClick = async () => {
   if (fileList.value.length === 0) {
-    alert('Please upload files first.')
+    alert('请选择文件')
     return
   }
 
@@ -178,11 +178,11 @@ const confirmClick = async () => {
       formRef.value?.resetFields()
       fileList.value = []
     } catch (error) {
-      console.error('音频添加失败:', error)
-      alert('音频添加失败，请重试。')
+      console.error('添加失败:', error)
+      alert('添加失败，请重试。')
     }
   } else {
-    alert('File upload failed. Please try again.')
+    alert('上穿失败，请重试.')
   }
 }
 

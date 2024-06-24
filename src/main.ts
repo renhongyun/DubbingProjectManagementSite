@@ -6,6 +6,7 @@ import router from './router'
 import 'normalize.css'
 import '@/assets/css/index.less'
 // import 'element-plus/theme-chalk/el-message.css'
+import 'element-plus/dist/index.css'
 
 import registerIcons from './global/register-icons'
 const app = createApp(App)

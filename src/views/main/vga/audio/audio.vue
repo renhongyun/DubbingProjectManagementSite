@@ -3,7 +3,6 @@
     <search @query-click="handleQueryClick" @reset-click="handleResetClick"></search>
     <table-content
       ref="contentRef"
-      @new-click="handleNewClick"
       @edit-click="handleEditClick"
       @more-click="handleMoreClick"
     ></table-content>
@@ -33,20 +32,20 @@ const handleResetClick = () => {
 }
 //对modal的封装
 const modalRef = ref<InstanceType<typeof modal>>()
-const handleNewClick = () => {
-  modalRef.value?.setModalVisible(true)
-}
+// const handleNewClick = () => {
+//   modalRef.value?.setModalVisible(true)
+// }
 
 //添加数据
 const handleAddClick = (formData: IUploadAudio) => {
   contentRef.value?.newData(formData)
 }
 const handleEditClick = (itemData: any) => {
-  modalRef.value?.setModalVisible(false, itemData)
+  modalRef.value?.setModalVisible(itemData)
 }
 
 const handleMoreClick = () => {
-  moreModalRef.value?.setModalVisible(true)
+  moreModalRef.value?.setModalVisible()
 }
 
 //加载全部标签
@@ -61,4 +60,3 @@ onMounted(async () => {
   overflow: hidden;
 }
 </style>
-@/store/main/tag/tag

@@ -1,20 +1,18 @@
 <template>
   <div class="content">
     <div class="header">
-      <h2 class="title">音频列表</h2>
-      <el-button type="primary" @click="handleMoreClick">批量添加</el-button>
-      <!-- <el-button type="primary" @click="handleNewClick" class="newBtn">添加音频</el-button> -->
+      <h2 class="title">视频列表</h2>
+      <el-button type="primary" @click="handleMoreClick">添加</el-button>
     </div>
     <div class="table">
-      <el-table :data="audioList" border stripe>
+      <el-table :data="videoList" border stripe>
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="name" label="名称" />
-        <el-table-column prop="createTime" label="创建时间">
+        <el-table-column prop="cover" label="封面">
           <template #default="scope">
-            {{ scope.row.createTime }}
+            <img :src="scope.row.cover" alt="" class="cover" />
           </template>
         </el-table-column>
-        <el-table-column prop="updateTime" label="更新时间" />
 
         <el-table-column prop="url" label="地址" width="230">
           <template #default="scope">
@@ -22,44 +20,16 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="categoryId" label="一级分类">
-          <template #default="scope">
-            {{
-              scope.row.categoryId === 1
-                ? '中文配音'
-                : scope.row.categoryId === 2
-                  ? '外语配音'
-                  : '未知'
-            }}
-          </template>
-        </el-table-column>
         <el-table-column prop="sex" label="性别">
           <template #default="scope"> {{ scope.row.sex ? '男' : '女' }} </template>
         </el-table-column>
-        <el-table-column prop="emotionTagId" label="情绪标签" width="100">
+
+        <el-table-column prop="languageId" label="语言标签" width="100">
           <template #default="scope">
-            {{ getTagName(scope.row.emotionTagId, tagsByType[0]) }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="categoryTagId" label="类型标签" width="100">
-          <template #default="scope">
-            {{ getTagName(scope.row.categoryTagId, tagsByType[1]) }}
-          </template>
-        </el-table-column>
-        <el-table-column prop="languageTagId" label="语言标签" width="100">
-          <template #default="scope">
-            {{ getTagName(scope.row.languageTagId, tagsByType[2]) }}
+            {{ getTagName(scope.row.languageId, tagsByType[2]) }}
           </template>
         </el-table-column>
 
-        <el-table-column prop="dubbingActorId" label="配音老师">
-          <template #default="scope">
-            <span>{{ getAuthorName(scope.row.dubbingActorId) }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="isRecommend" label="推荐" width="60">
-          <template #default="scope"> {{ scope.row.isRecommend ? '是 ' : '否' }} </template>
-        </el-table-column>
         <el-table-column align="center" label="操作" width="180">
           <template #default="scope">
             <el-button
@@ -87,27 +57,25 @@
   </div>
 </template>
 <script setup lang="ts">
-import useAudioStore from '@/store/main/vga/audio'
+import useVideoStore from '@/store/main/vga/video'
 import { storeToRefs } from 'pinia'
 import { reactive, ref } from 'vue'
-import IUploadAudio from '@/types/audio.ts'
+import IUploadVideo from '@/types/video'
 import useTagStore from '@/store/tag/tag'
-
-import useAuthorStore from '@/store/author/author'
 
 const emit = defineEmits(['editClick', 'moreClick'])
 
-const audioStore = useAudioStore()
-const { audioList } = storeToRefs(audioStore)
+const videoStore = useVideoStore()
+const { videoList } = storeToRefs(videoStore)
 
-const fetchListData = (formData: any = {}) => {
-  audioStore.fetchAllAudioAction(formData)
+const fetchListData = () => {
+  videoStore.fetchVideoListAction()
 }
 fetchListData()
 
 // 删除
 const handleDeleteBtnClick = (id: number) => {
-  audioStore.deleteAudioAction(id)
+  videoStore.deleteVideoAction(id)
 }
 
 //新建
@@ -126,8 +94,8 @@ const handleEditBtnClick = (itemData: any) => {
 }
 
 //添加数据
-const newData = (formData: IUploadAudio) => {
-  audioStore.addAudioAction(formData)
+const newData = (formData: IUploadVideo) => {
+  videoStore.addVideoAction(formData)
 }
 
 //捆绑tagid和内容
@@ -139,14 +107,6 @@ const getTagName = (id: number, tags) => {
   return tag ? tag.name : '无'
 }
 
-//捆绑authorid和内容
-const authorStore = useAuthorStore()
-const { authorList } = storeToRefs(authorStore)
-authorStore.fetchAllAuthorAction()
-const getAuthorName = (id: number) => {
-  const author = authorList.value.find((author) => author.id === id)
-  return author ? author.name : ''
-}
 defineExpose({
   fetchListData,
   newData
@@ -167,6 +127,10 @@ defineExpose({
 }
 .url {
   color: #409eff;
+}
+.cover {
+  width: 60px;
+  // height: 60px;
 }
 </style>
 @/store/main/author/author@/store/main/tag/tag
