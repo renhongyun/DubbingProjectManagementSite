@@ -1,7 +1,6 @@
 <template>
   <div class="content">
     <el-button type="primary" @click="handleNewClick" class="newBtn">添加标签</el-button>
-    <el-button type="primary" @click="handleNewClick" class="newBtn">批量添签</el-button>
 
     <template v-for="(item, index) in tagsByType">
       <div class="item">

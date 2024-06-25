@@ -45,6 +45,15 @@
           </el-form-item>
         </el-col>
         <el-col :span="6">
+          <el-form-item label="语言标签" prop="languageTagId" label-width="80px">
+            <el-select placeholder="请选择作品语言标签" v-model="searchForm.languageTagId">
+              <template v-for="item in tagsByType[2]" :key="item.id">
+                <el-option :value="item.id" :label="item.name" />
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
           <div class="btns">
             <el-button icon="Refresh" @click="handleResetClick">重置</el-button>
             <el-button icon="Search" type="primary" @click="handleQueryClick">查询</el-button>
